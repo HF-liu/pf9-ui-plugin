@@ -1,7 +1,11 @@
-import http from '../../../util/http'
+import { getBaseUrl, makeRequest } from './helpers'
 
-const v2Base = '/nova/v2.1'
-const authHttp = http.authenticated.openstack
+const baseUrl = () => {
+  const url = getBaseUrl('nova', 'internal')
+  let parts = url.split('/')
+  parts.pop()
+  return parts.join('/')
+}
 
 export const createFlavor = (flavor, tenantId) => {
   const body = {
@@ -12,9 +16,9 @@ export const createFlavor = (flavor, tenantId) => {
       disk: 10,
     }
   }
-  return authHttp.post(`${v2Base}/${tenantId}/flavors`, body).then(json => json.flavor.id)
+  return makeRequest(baseUrl(), `/${tenantId}/flavors`, 'post', body).then(json => json.flavor.id)
 }
 
-export const deleteFlavor = (flavorId, tenantId) => authHttp.delete(`${v2Base}/${tenantId}/${flavorId}`)
+export const deleteFlavor = (flavorId, tenantId) => makeRequest(baseUrl(), `/${tenantId}/flavors/${flavorId}`, 'delete')
 
-export const getFlavors = (tenantId) => authHttp.get(`${v2Base}/${tenantId}/flavors/detail`).then(x => x.flavors)
+export const getFlavors = (tenantId) => makeRequest(baseUrl(), `/${tenantId}/flavors/detail`, 'get').then(x => x.flavors)

@@ -22,6 +22,7 @@ import tenantsReducer from './reducers/tenants'
 import usersReducer from './reducers/users'
 import flavorsReducer from './reducers/flavors'
 import networksReducer from './reducers/networks'
+import serviceCatalogReducer from './reducers/serviceCatalog'
 
 class OpenStack extends React.Component {
   render () {
@@ -124,6 +125,7 @@ OpenStack.reducer = combineReducers({
   users: usersReducer,
   flavors: flavorsReducer,
   networks: networksReducer,
+  serviceCatalog: serviceCatalogReducer
 })
 
 export default OpenStack
